@@ -1,0 +1,35 @@
+// src/components/Footer.scss
+.footer {
+    background: #222222a1;
+    color: #ccc;
+    text-align: center;
+    padding: 20px;
+    font-size: 14px;
+  
+    .footer-links {
+      margin-bottom: 10px;
+      a {
+        margin: 0 10px;
+        color: #ccc;
+        text-decoration: none;
+        &:hover {
+          color: #f0a500;
+        }
+      }
+    }
+    .footer-social {
+      margin-bottom: 10px;
+      a {
+        margin: 0 10px;
+        color: #ccc;
+        text-decoration: none;
+        &:hover {
+          color: #f0a500;
+        }
+      }
+    }
+    .footer-copy {
+      font-size: 12px;
+    }
+  }
+  

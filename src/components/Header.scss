@@ -1,0 +1,62 @@
+// src/components/Header.scss
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 40px;
+    background: #fff;
+    position: relative;
+    z-index: 1000;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  
+    .logo a {
+      font-size: 24px;
+      font-weight: bold;
+      color: #333;
+      text-decoration: none;
+    }
+  
+    .hamburger {
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      z-index: 1100;
+      .line {
+        width: 30px;
+        height: 3px;
+        background-color: #000000bf;
+        border-radius: 2px;
+      }
+    }
+  
+    .nav-menu {
+      position: fixed;
+      top: 0;
+      right: -100%;
+      width: 300px;
+      height: 100%;
+      background: #333;
+      color: #fff;
+      opacity: 0;
+      transition: opacity 0.5s;
+      z-index: 1050;
+      ul {
+        list-style: none;
+        padding: 60px 30px;
+        li {
+          margin: 20px 0;
+          a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 20px;
+            transition: color 0.3s;
+            &:hover {
+              color: #f0a500;
+            }
+          }
+        }
+      }
+    }
+  }
+  

@@ -1,0 +1,24 @@
+[33mcommit 66e15e578ba1a74e0ed7b40156e130332aee817d[m[33m ([m[1;36mHEAD -> [m[1;32mrecovered-branch[m[33m, [m[1;31morigin/main[m[33m, [m[1;32mmain[m[33m)[m
+Merge: c1d943f 73e9360
+Author: Ajai Kamaraj <77797319+ajxd@users.noreply.github.com>
+Date:   Mon Feb 17 15:56:54 2025 -0500
+
+    Resolved merge conflicts in README.md
+
+[33mcommit 73e93602059b5db2e82b35cf62d02708b797e730[m
+Author: Ajai Kamaraj <77797319+ajxd@users.noreply.github.com>
+Date:   Mon Feb 17 15:36:34 2025 -0500
+
+    Initial commit
+
+[33mcommit c1d943fe99f2a40b4f3dfacddd9a8231b94cd627[m
+Author: Ajai Kamaraj <77797319+ajxd@users.noreply.github.com>
+Date:   Wed Feb 5 02:30:23 2025 -0500
+
+    Initial commit: push entire project
+
+[33mcommit 460408a8d60fb45e2903122f62903c441ae0be5d[m
+Author: Ajai Kamaraj <77797319+ajxd@users.noreply.github.com>
+Date:   Tue Feb 4 03:03:00 2025 -0500
+
+    Initial commit
