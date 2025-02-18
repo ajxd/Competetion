@@ -1,20 +1,46 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
+import { Elements } from '@stripe/react-stripe-js';
+import { loadStripe } from '@stripe/stripe-js';
 import './Registration.scss';
 import RainbowBalls from '../components/RainbowBalls';
+import PaymentForm from './PaymentForm';
+
+// Initialize Stripe with your test publishable key
+const stripePromise = loadStripe(
+  'pk_test_51Nb96uINWXfLdDEdEiIrOoN0awlgKICINAFJiczSdoWBst3gqpZP06kpKmccg69WgDZoTZLhvMwyAaUHvl1QSjcA00kM0GhHF8'
+);
 
 const Registration = () => {
   const formRef = useRef(null);
+  const [clientSecret, setClientSecret] = useState('');
 
   useEffect(() => {
-    // Animate the registration form container into view
+    // Animate the registration container into view
     gsap.fromTo(
       formRef.current,
       { opacity: 0, y: 50 },
       { opacity: 1, y: 0, duration: 1, ease: 'power3.out' }
     );
 
-    // Optional: Animate focus effects for form elements
+    // Fetch the PaymentIntent client secret from your server
+    fetch('http://localhost:3001/create-payment-intent', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      // Example: sending an amount of 5000 cents ($50); adjust as needed.
+      body: JSON.stringify({ amount: 5000 })
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        setClientSecret(data.clientSecret);
+      })
+      .catch((error) => {
+        console.error('Error fetching client secret:', error);
+      });
+
+    // Add subtle focus animations for form elements
     const inputs = formRef.current.querySelectorAll('input, select, button');
     inputs.forEach((input) => {
       input.addEventListener('focus', () => {
@@ -35,42 +61,17 @@ const Registration = () => {
 
   return (
     <div className="registration-page">
-      {/* RainbowBalls background for registration page */}
       <RainbowBalls />
-      <div className="registration-container">
+      <div className="registration-container" ref={formRef}>
         <h2>Registration</h2>
-        <p>Please fill in the form below to register for the contest.</p>
-        <form ref={formRef} className="registration-form">
-          <div className="form-group">
-            <label>Name:</label>
-            <input type="text" placeholder="Your name" required />
-          </div>
-          <div className="form-group">
-            <label>Email:</label>
-            <input type="email" placeholder="Your email" required />
-          </div>
-          <div className="form-group">
-            <label>Age Group:</label>
-            <select required>
-              <option value="">Select Age Group</option>
-              <option value="kindergarten">Kindergarten</option>
-              <option value="grade1-2">Grade 1-2</option>
-              <option value="grade3-5">Grade 3-5</option>
-            </select>
-          </div>
-          <div className="form-group">
-            <label>Contest Category:</label>
-            <select required>
-              <option value="">Select Category</option>
-              <option value="dance">Dance</option>
-              <option value="singing">Singing/Vocal</option>
-              <option value="art">Coloring/Art</option>
-              <option value="costume">Costume</option>
-              <option value="storytelling">Storytelling</option>
-            </select>
-          </div>
-          <button type="submit" className="submit-btn">Submit Registration</button>
-        </form>
+        <p>Please fill in the form below to register for the contest and complete your payment.</p>
+        {clientSecret ? (
+          <Elements stripe={stripePromise} options={{ clientSecret }}>
+            <PaymentForm />
+          </Elements>
+        ) : (
+          <p>Loading payment details...</p>
+        )}
       </div>
     </div>
   );
