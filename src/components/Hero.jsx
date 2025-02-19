@@ -3,12 +3,22 @@ import gsap from 'gsap';
 import './Hero.scss';
 
 // Import your 12 video files from the images folder
-import video0 from '../assets/images/h1.mp4';
-
-
+import video0 from '../assets/images/0.mp4';
+import video1 from '../assets/images/1.mp4';
+import video2 from '../assets/images/2.mp4';
+import video3 from '../assets/images/3.mp4';
+import video4 from '../assets/images/4.mp4';
+import video5 from '../assets/images/5.mp4';
+import video6 from '../assets/images/6.mp4';
+import video7 from '../assets/images/7.mp4';
+import video8 from '../assets/images/8.mp4';
+import video9 from '../assets/images/9.mp4';
+import video10 from '../assets/images/10.mp4';
+import video11 from '../assets/images/11.mp4';
 
 const videos = [
-  video0, 
+  video0, video1, video2, video3, video4, video5,
+  video6, video7, video8, video9, video10, video11
 ];
 
 const Hero = () => {
