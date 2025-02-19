@@ -1,0 +1,159 @@
+/* src/pages/ContestCostume.scss */
+.contest-costume-page {
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    overflow: hidden;
+    background: #fff; /* White overall background */
+  }
+  
+  /* Canvas Container for interactive background */
+  .canvas-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -2;
+  }
+  
+  /* Background canvas styling */
+  .background-canvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+  
+  /* Overlay Container */
+  .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.5s ease;
+  }
+  
+  /* Glass-like content wrapper with animated gradient border */
+  .content-wrapper {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px;
+    gap: 40px;
+    background: rgba(255, 255, 255, 0.85);
+    border-radius: 15px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+    border: 3px solid transparent;
+    background-clip: padding-box;
+    position: relative;
+  }
+  
+  .content-wrapper::before {
+    content: "";
+    position: absolute;
+    top: -3px;
+    left: -3px;
+    right: -3px;
+    bottom: -3px;
+    z-index: -1;
+    background: linear-gradient(45deg, #f0a500, #f08d00, #cf8500, #cf6e00);
+    background-size: 400%;
+    border-radius: 18px;
+    animation: gradientShift 5s linear infinite;
+  }
+  
+  @keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+  
+  .left-panel,
+  .right-panel {
+    flex: 1;
+    padding: 20px;
+  }
+  
+  .left-panel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    .sing-img-wrapper {
+      width: 200px;
+      height: 200px;
+      margin-bottom: 20px;
+      overflow: hidden;
+      border-radius: 50%;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+      transition: transform 0.3s ease;
+      &:hover {
+        transform: scale(1.05);
+      }
+      .sing-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    }
+    h1 {
+      font-size: 3rem;
+      margin-bottom: 10px;
+      color: #333;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+      animation: pulse 2s infinite;
+    }
+    .tagline {
+      font-size: 1.5rem;
+      color: #666;
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+    }
+  }
+  
+  .right-panel {
+    p {
+      font-size: 1.2rem;
+      color: #333;
+      line-height: 1.6;
+      margin-bottom: 20px;
+      transition: letter-spacing 0.3s ease;
+      &:hover {
+        letter-spacing: 2px;
+      }
+    }
+    .cta {
+      margin-top: 20px;
+      .btn {
+        display: inline-block;
+        padding: 12px 30px;
+        font-size: 1rem;
+        background: linear-gradient(45deg, #f0a500, #f08d00);
+        color: #fff;
+        text-decoration: none;
+        border-radius: 5px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        transition: background 0.3s, transform 0.3s, box-shadow 0.3s;
+        &:hover {
+          background: linear-gradient(45deg, #cf8500, #cf6e00);
+          transform: scale(1.05);
+          box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+        }
+      }
+    }
+  }
+  
+  /* Pulsating header animation */
+  @keyframes pulse {
+    0% { text-shadow: 2px 2px 4px rgba(0,0,0,0.2); }
+    50% { text-shadow: 4px 4px 12px rgba(0,0,0,0.4); }
+    100% { text-shadow: 2px 2px 4px rgba(0,0,0,0.2); }
+  }
+  
