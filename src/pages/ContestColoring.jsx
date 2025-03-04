@@ -34,12 +34,11 @@ const ContestColoring = () => {
     for (let i = 0; i < splatCount; i++) {
       const centerX = Math.random() * width;
       const centerY = Math.random() * height;
-      const baseRadius = Math.random() * 40 + 20; // varying size for high-definition splashes
-      const vertexCount = Math.floor(Math.random() * 4) + 5; // 5 to 8 vertices
+      const baseRadius = Math.random() * 40 + 20;
+      const vertexCount = Math.floor(Math.random() * 4) + 5;
       let vertices = [];
       for (let j = 0; j < vertexCount; j++) {
         const angle = (j / vertexCount) * Math.PI * 2;
-        // Randomize each vertex's radius slightly
         const r = baseRadius * (0.7 + Math.random() * 0.6);
         vertices.push({
           x: centerX + r * Math.cos(angle),
@@ -53,11 +52,10 @@ const ContestColoring = () => {
         vertices,
         vx: (Math.random() - 0.5) * 2,
         vy: (Math.random() - 0.5) * 2,
-        hue: Math.floor(Math.random() * 360), // random hue for vibrant colors
+        hue: Math.floor(Math.random() * 360),
       });
     }
     
-    // Update splats with simple physics and pointer repulsion
     const updateSplats = () => {
       splats.forEach(splat => {
         splat.centerX += splat.vx;
@@ -83,7 +81,6 @@ const ContestColoring = () => {
       });
     };
 
-    // Draw splats as irregular polygons with a radial gradient fill
     const drawSplats = () => {
       ctx.clearRect(0, 0, width, height);
       splats.forEach(splat => {
@@ -119,14 +116,12 @@ const ContestColoring = () => {
     };
     animateCanvas();
     
-    // Handle window resize events
     const handleResize = () => {
       width = canvas.width = window.innerWidth;
       height = canvas.height = window.innerHeight;
     };
     window.addEventListener('resize', handleResize);
     
-    // Update pointer position for interactivity
     const handlePointerMove = (e) => {
       let clientX = e.touches ? e.touches[0].clientX : e.clientX;
       let clientY = e.touches ? e.touches[0].clientY : e.clientY;
@@ -135,7 +130,6 @@ const ContestColoring = () => {
     window.addEventListener('pointermove', handlePointerMove);
     window.addEventListener('touchmove', handlePointerMove);
     
-    // Easter Egg: Rotate overlay on triple click in top-left corner
     const handlePointerDown = (e) => {
       let clientX = e.touches ? e.touches[0].clientX : e.clientX;
       let clientY = e.touches ? e.touches[0].clientY : e.clientY;
@@ -201,10 +195,21 @@ const ContestColoring = () => {
         <div className="content-wrapper">
           <div className="left-panel">
             <div className="coloring-img-wrapper">
-              <img src={require('../assets/images/coloring.png')} alt="Coloring Competition" className="coloring-img" />
+              <img src={coloringImg} alt="Coloring Competition" className="coloring-img" />
             </div>
             <h1 ref={headerRef}>Coloring Competition</h1>
             <p className="tagline">"Color Your World – Creativity Knows No Boundaries!"</p>
+            {/* Contest Coordinator Info placed immediately below the tagline */}
+            <div className="coordinator-info">
+              <div className="coordinator-photo">
+                <img src={require('../assets/images/coordinator.jpg')} alt="Contest Coordinator" />
+              </div>
+              <div className="coordinator-details">
+                <p><strong>Contest Coordinator 😊</strong></p>
+                <p>Contact Number: 9884481399</p>
+                <p>Mail Address: info@ranmars.com</p>
+              </div>
+            </div>
           </div>
           <div className="right-panel" ref={contentRef}>
             <p>

@@ -2,16 +2,13 @@ import React, { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import './ContestHandwriting.scss';
 
-// Ensure you have an image "handwriting.png" in your assets/images folder.
 const ContestHandwriting = () => {
-  // Refs for the interactive background and overlay elements.
+  // Refs for the canvas container, overlay, header, content, pointer tracking, and Easter egg clicks.
   const canvasContainerRef = useRef(null);
   const overlayRef = useRef(null);
   const headerRef = useRef(null);
   const contentRef = useRef(null);
-  // For interactive pointer tracking.
   const pointerPosRef = useRef({ x: window.innerWidth / 2, y: window.innerHeight / 2 });
-  // For an Easter egg feature.
   const easterEggClicksRef = useRef([]);
 
   // -------------------------------
@@ -19,6 +16,8 @@ const ContestHandwriting = () => {
   // -------------------------------
   useEffect(() => {
     const container = canvasContainerRef.current;
+    if (!container) return; // Guard: proceed only if container exists
+
     let width = window.innerWidth;
     let height = window.innerHeight;
     // Create a full‑screen canvas.
@@ -41,12 +40,11 @@ const ContestHandwriting = () => {
         length: Math.random() * 150 + 50,
         opacity: Math.random() * 0.5 + 0.3,
         lineWidth: Math.random() * 2 + 1,
-        // Warm ink tones (you can adjust hue ranges as desired)
+        // Warm ink tones
         color: `hsla(${Math.floor(Math.random() * 20 + 20)}, 70%, 30%, 0.7)`
       });
     }
 
-    // Update scribble positions with simple physics and repulsion from the pointer.
     const updateScribbles = () => {
       scribbles.forEach(scribble => {
         scribble.x += Math.cos(scribble.angle) * scribble.speed;
@@ -57,7 +55,7 @@ const ContestHandwriting = () => {
         if (scribble.y < 0 || scribble.y > height) {
           scribble.angle = -scribble.angle;
         }
-        // If pointer is near, slightly modify the scribble angle.
+        // Modify the angle if the pointer is nearby.
         const dx = scribble.x - pointerPosRef.current.x;
         const dy = scribble.y - pointerPosRef.current.y;
         const dist = Math.sqrt(dx * dx + dy * dy);
@@ -68,7 +66,6 @@ const ContestHandwriting = () => {
       });
     };
 
-    // Draw each scribble as a simple line segment with rounded ends.
     const drawScribbles = () => {
       ctx.clearRect(0, 0, width, height);
       scribbles.forEach(scribble => {
@@ -94,14 +91,12 @@ const ContestHandwriting = () => {
     };
     animateCanvas();
 
-    // Handle window resize.
     const handleResize = () => {
       width = canvas.width = window.innerWidth;
       height = canvas.height = window.innerHeight;
     };
     window.addEventListener('resize', handleResize);
 
-    // Update pointer position for interactive effects.
     const handlePointerMove = (e) => {
       const clientX = e.touches ? e.touches[0].clientX : e.clientX;
       const clientY = e.touches ? e.touches[0].clientY : e.clientY;
@@ -110,7 +105,6 @@ const ContestHandwriting = () => {
     window.addEventListener('pointermove', handlePointerMove);
     window.addEventListener('touchmove', handlePointerMove);
 
-    // Easter Egg: Rotate overlay if top-left corner is clicked three times within 5 seconds.
     const handlePointerDown = (e) => {
       const clientX = e.touches ? e.touches[0].clientX : e.clientX;
       const clientY = e.touches ? e.touches[0].clientY : e.clientY;
@@ -141,7 +135,7 @@ const ContestHandwriting = () => {
   }, []);
 
   // -------------------------------
-  // Animate Overlay Content with GSAP and Parallax Effects
+  // Animate overlay content with GSAP and interactive parallax
   // -------------------------------
   useEffect(() => {
     gsap.fromTo(
@@ -169,18 +163,26 @@ const ContestHandwriting = () => {
 
   return (
     <div className="contest-handwriting-page">
-      {/* Container for the interactive background */}
       <div ref={canvasContainerRef} className="canvas-container"></div>
-      {/* Overlay content */}
       <div className="overlay" ref={overlayRef}>
         <div className="content-wrapper">
           <div className="left-panel">
-            {/* Circular image for handwriting competition */}
             <div className="handwriting-img-wrapper">
               <img src={require('../assets/images/handwriting.png')} alt="Handwriting Competition" className="handwriting-img" />
             </div>
-            <h1 ref={headerRef}>Handwriting</h1>
+            <h1 ref={headerRef}>Handwriting Competition</h1>
             <p className="tagline">"Write Your Way to Success – Every Stroke Matters!"</p>
+            {/* Coordinator Info placed immediately below the tagline */}
+            <div className="coordinator-info">
+              <div className="coordinator-photo">
+                <img src={require('../assets/images/coordinator.jpg')} alt="Contest Coordinator" />
+              </div>
+              <div className="coordinator-details">
+                <p><strong>Contest Coordinator 😊</strong></p>
+                <p>Contact Number: 9884481399</p>
+                <p>Mail Address: info@ranmars.com</p>
+              </div>
+            </div>
           </div>
           <div className="right-panel" ref={contentRef}>
             <p>

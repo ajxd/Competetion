@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import './ContestDance.scss';
-import danceImg from '../assets/images/dance.png';
+import danceImg from '../assets/images/dance.png'; // Ensure you have your dance image
 
 const ContestDance = () => {
   // Refs for the canvas background, overlay container, header, and content.
@@ -11,11 +11,11 @@ const ContestDance = () => {
   const contentRef = useRef(null);
   // Pointer position for interactive background effects.
   const pointerPosRef = useRef({ x: window.innerWidth / 2, y: window.innerHeight / 2 });
-  // Easter egg click tracker (for top-left corner clicks).
+  // Easter egg click tracker (for top-left clicks).
   const easterEggClicksRef = useRef([]);
 
   // -------------------------------
-  // Interactive Canvas Background (Dance Icons)
+  // Interactive Canvas Background (Dance Icons / Bubbles)
   // -------------------------------
   useEffect(() => {
     const container = canvasContainerRef.current;
@@ -28,10 +28,10 @@ const ContestDance = () => {
     container.appendChild(canvas);
     const ctx = canvas.getContext('2d');
 
-    // Array of dance icons – you can add more as needed.
-    const icons = ['💃', '🕺', '👯‍♀️', '🎶'];
+    // Example: Create an array of dance icons (or bubbles) for the background effect.
+    const icons = ['💃', '🕺', '🎶'];
     const items = [];
-    const itemCount = 100; // Increase for a denser effect
+    const itemCount = 100;
     for (let i = 0; i < itemCount; i++) {
       const baseFontSize = Math.random() * 20 + 30;
       items.push({
@@ -41,31 +41,23 @@ const ContestDance = () => {
         vy: (Math.random() - 0.5) * 2,
         baseFontSize,
         char: icons[Math.floor(Math.random() * icons.length)],
-        radius: baseFontSize / 2
+        radius: baseFontSize / 2,
       });
     }
 
-    // (Optional) Arrays for sparkles or ripples on pointer down can be added here
-    const sparkles = [];
-    const ripples = [];
-
-    // Helper: Create a radial gradient for each dance icon
     const getGradientForIcon = (item, fontSize, time) => {
       const gradient = ctx.createRadialGradient(
         item.x, item.y, fontSize / 4,
         item.x, item.y, fontSize
       );
-      // For a dynamic, colorful effect, use random HSL values
-      const hue1 = Math.floor(Math.random() * 360);
-      const hue2 = (hue1 + 60) % 360;
-      gradient.addColorStop(0, `hsla(${hue1}, 100%, 80%, 1)`);
-      gradient.addColorStop(0.5, `hsla(${hue2}, 100%, 70%, 0.8)`);
+      const hue = Math.floor(Math.random() * 360);
+      gradient.addColorStop(0, `hsla(${hue}, 100%, 85%, 1)`);
+      gradient.addColorStop(0.5, `hsla(${(hue + 30) % 360}, 100%, 75%, 0.8)`);
       gradient.addColorStop(1, 'hsla(0, 0%, 100%, 0)');
       return gradient;
     };
 
-    // Update physics: move items, bounce off edges and simple collision response.
-    const updatePhysics = () => {
+    const updateItems = () => {
       items.forEach(item => {
         item.x += item.vx;
         item.y += item.vy;
@@ -78,51 +70,28 @@ const ContestDance = () => {
           item.y = Math.max(item.radius, Math.min(item.y, height - item.radius));
         }
       });
-      // Simple collision detection and response (swap velocities)
-      for (let i = 0; i < items.length; i++) {
-        for (let j = i + 1; j < items.length; j++) {
-          const a = items[i];
-          const b = items[j];
-          const dx = a.x - b.x;
-          const dy = a.y - b.y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < a.radius + b.radius) {
-            const tempVx = a.vx;
-            const tempVy = a.vy;
-            a.vx = b.vx;
-            a.vy = b.vy;
-            b.vx = tempVx;
-            b.vy = tempVy;
-          }
-        }
-      }
     };
 
-    let animationFrameId;
-    const animateItems = () => {
-      const time = Date.now();
+    const drawItems = () => {
       ctx.clearRect(0, 0, width, height);
-      updatePhysics();
-      // Draw each dance icon
-      const pointerX = pointerPosRef.current.x;
-      const pointerY = pointerPosRef.current.y;
-      const threshold = 100;
+      const time = Date.now();
       items.forEach(item => {
-        const dx = item.x - pointerX;
-        const dy = item.y - pointerY;
-        const distance = Math.sqrt(dx * dx + dy * dy);
-        const scaleFactor = distance < threshold ? 1 + ((threshold - distance) / threshold) * 0.5 : 1;
-        const currentFontSize = item.baseFontSize * scaleFactor;
-        ctx.font = `${currentFontSize}px Arial`;
+        ctx.font = `${item.baseFontSize}px Arial`;
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
-        const gradient = getGradientForIcon(item, currentFontSize, time);
+        const gradient = getGradientForIcon(item, item.baseFontSize, time);
         ctx.fillStyle = gradient;
         ctx.fillText(item.char, item.x, item.y);
       });
-      animationFrameId = requestAnimationFrame(animateItems);
     };
-    animateItems();
+
+    let animationFrameId;
+    const animateCanvas = () => {
+      updateItems();
+      drawItems();
+      animationFrameId = requestAnimationFrame(animateCanvas);
+    };
+    animateCanvas();
 
     const handleResize = () => {
       width = canvas.width = window.innerWidth;
@@ -130,30 +99,17 @@ const ContestDance = () => {
     };
     window.addEventListener('resize', handleResize);
 
-    const handleMove = (e) => {
-      let clientX, clientY;
-      if (e.touches) {
-        clientX = e.touches[0].clientX;
-        clientY = e.touches[0].clientY;
-      } else {
-        clientX = e.clientX;
-        clientY = e.clientY;
-      }
+    const handlePointerMove = (e) => {
+      const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+      const clientY = e.touches ? e.touches[0].clientY : e.clientY;
       pointerPosRef.current = { x: clientX, y: clientY };
     };
-    window.addEventListener('pointermove', handleMove);
-    window.addEventListener('touchmove', handleMove);
+    window.addEventListener('pointermove', handlePointerMove);
+    window.addEventListener('touchmove', handlePointerMove);
 
     const handlePointerDown = (e) => {
-      let clientX, clientY;
-      if (e.touches) {
-        clientX = e.touches[0].clientX;
-        clientY = e.touches[0].clientY;
-      } else {
-        clientX = e.clientX;
-        clientY = e.clientY;
-      }
-      // Easter Egg: if clicked in the top-left corner three times within 5 seconds, trigger an overlay rotation
+      const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+      const clientY = e.touches ? e.touches[0].clientY : e.clientY;
       if (clientX < 100 && clientY < 100) {
         const now = Date.now();
         easterEggClicksRef.current = easterEggClicksRef.current.filter(t => now - t < 5000);
@@ -169,19 +125,19 @@ const ContestDance = () => {
 
     return () => {
       window.removeEventListener('resize', handleResize);
-      window.removeEventListener('pointermove', handleMove);
-      window.removeEventListener('touchmove', handleMove);
+      window.removeEventListener('pointermove', handlePointerMove);
+      window.removeEventListener('touchmove', handlePointerMove);
       window.removeEventListener('pointerdown', handlePointerDown);
       window.removeEventListener('touchstart', handlePointerDown);
       cancelAnimationFrame(animationFrameId);
-      if (canvas.parentNode === container) {
+      if (container.contains(canvas)) {
         container.removeChild(canvas);
       }
     };
   }, []);
 
   // -------------------------------
-  // Animate overlay content with GSAP and interactive parallax
+  // Animate overlay content with GSAP and Parallax
   // -------------------------------
   useEffect(() => {
     gsap.fromTo(
@@ -209,18 +165,28 @@ const ContestDance = () => {
 
   return (
     <div className="contest-dance-page">
-      {/* Canvas container for interactive dance icons background */}
+      {/* Canvas container for interactive background */}
       <div ref={canvasContainerRef} className="canvas-container"></div>
-      {/* Overlay container with glass-like gradient content box */}
+      {/* Overlay container with glass-like content box */}
       <div className="overlay" ref={overlayRef}>
         <div className="content-wrapper">
           <div className="left-panel">
-            {/* Circular dance image */}
             <div className="dance-img-wrapper">
               <img src={danceImg} alt="Dance Challenge" className="dance-img" />
             </div>
             <h1 ref={headerRef}>Dance Challenge</h1>
             <p className="tagline">"Let Your Feet Speak – Everyone's Stage, Equal for All!"</p>
+            {/* Coordinator Info placed immediately below the tagline */}
+            <div className="coordinator-info">
+              <div className="coordinator-photo">
+                <img src={require('../assets/images/coordinator.jpg')} alt="Contest Coordinator" />
+              </div>
+              <div className="coordinator-details">
+                <p><strong>Contest Coordinator 😊</strong></p>
+                <p>Contact Number: 9884481399</p>
+                <p>Mail Address: info@ranmars.com</p>
+              </div>
+            </div>
           </div>
           <div className="right-panel" ref={contentRef}>
             <p>

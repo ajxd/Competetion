@@ -4,23 +4,24 @@ import './ContestDrawing.scss';
 import drawingImg from '../assets/images/drawing.png';
 
 const ContestDrawing = () => {
-  // Refs for the canvas container, overlay, header, content, pointer tracking, and Easter egg clicks.
+  // Refs for the canvas container, overlay, header, and content.
   const canvasContainerRef = useRef(null);
   const overlayRef = useRef(null);
   const headerRef = useRef(null);
   const contentRef = useRef(null);
+  // Pointer tracking and Easter egg clicks.
   const pointerPosRef = useRef({ x: window.innerWidth / 2, y: window.innerHeight / 2 });
   const easterEggClicksRef = useRef([]);
 
-  // -------------------------------
-  // Interactive Canvas Background: Painter’s Canvas Effect
-  // -------------------------------
+  // Interactive Canvas Background Effect (Painter’s Canvas Effect)
   useEffect(() => {
     const container = canvasContainerRef.current;
+    if (!container) return; // Guard: only proceed if container exists
+
     let width = window.innerWidth;
     let height = window.innerHeight;
     
-    // Create a full-screen canvas element
+    // Create full-screen canvas element
     const canvas = document.createElement('canvas');
     canvas.width = width;
     canvas.height = height;
@@ -32,14 +33,13 @@ const ContestDrawing = () => {
     const splashCount = 80;
     const splashes = [];
     for (let i = 0; i < splashCount; i++) {
-      const radius = Math.random() * 30 + 20; // High-definition splashes
+      const radius = Math.random() * 30 + 20;
       splashes.push({
         x: Math.random() * width,
         y: Math.random() * height,
         vx: (Math.random() - 0.5) * 2,
         vy: (Math.random() - 0.5) * 2,
         radius,
-        // Two random hues for a dynamic gradient effect
         hue1: Math.floor(Math.random() * 360),
         hue2: Math.floor(Math.random() * 360)
       });
@@ -58,7 +58,7 @@ const ContestDrawing = () => {
           splash.vy = -splash.vy;
           splash.y = Math.max(splash.radius, Math.min(splash.y, height - splash.radius));
         }
-        // Repulsion effect if pointer is nearby
+        // Repulsion if pointer is near
         const dx = splash.x - pointerPosRef.current.x;
         const dy = splash.y - pointerPosRef.current.y;
         const dist = Math.sqrt(dx * dx + dy * dy);
@@ -70,7 +70,7 @@ const ContestDrawing = () => {
       });
     };
 
-    // Draw each splash using a radial gradient for a fluid, painted look
+    // Draw each splash using a radial gradient
     const drawSplashes = () => {
       ctx.clearRect(0, 0, width, height);
       splashes.forEach(splash => {
@@ -96,14 +96,12 @@ const ContestDrawing = () => {
     };
     animateCanvas();
 
-    // Handle window resize events
     const handleResize = () => {
       width = canvas.width = window.innerWidth;
       height = canvas.height = window.innerHeight;
     };
     window.addEventListener('resize', handleResize);
 
-    // Update pointer position for interactive effects
     const handlePointerMove = (e) => {
       const clientX = e.touches ? e.touches[0].clientX : e.clientX;
       const clientY = e.touches ? e.touches[0].clientY : e.clientY;
@@ -112,7 +110,6 @@ const ContestDrawing = () => {
     window.addEventListener('pointermove', handlePointerMove);
     window.addEventListener('touchmove', handlePointerMove);
 
-    // Easter Egg: if clicked in the top-left corner three times within 5 seconds, rotate overlay
     const handlePointerDown = (e) => {
       const clientX = e.touches ? e.touches[0].clientX : e.clientX;
       const clientY = e.touches ? e.touches[0].clientY : e.clientY;
@@ -171,18 +168,28 @@ const ContestDrawing = () => {
 
   return (
     <div className="contest-drawing-page">
-      {/* Canvas container for interactive background */}
-      <div ref={canvasContainerRef} className="canvas-container"></div>
-      {/* Overlay container */}
+      <div className="canvas-container">
+        {/* If you have an interactive background, it can be rendered here */}
+      </div>
       <div className="overlay" ref={overlayRef}>
         <div className="content-wrapper">
           <div className="left-panel">
-            {/* Circular drawing image */}
             <div className="draw-img-wrapper">
-              <img src={require('../assets/images/drawing.png')} alt="Drawing Competition" className="draw-img" />
+              <img src={drawingImg} alt="Drawing Competition" className="draw-img" />
             </div>
             <h1 ref={headerRef}>Drawing Competition</h1>
             <p className="tagline">"Every Line Tells a Story – Equal Canvas for All!"</p>
+            {/* Coordinator Info placed immediately below the tagline */}
+            <div className="coordinator-info">
+              <div className="coordinator-photo">
+                <img src={require('../assets/images/coordinator.jpg')} alt="Contest Coordinator" />
+              </div>
+              <div className="coordinator-details">
+                <p><strong>Contest Coordinator 😊</strong></p>
+                <p>Contact Number: 9884481399</p>
+                <p>Mail Address: info@ranmars.com</p>
+              </div>
+            </div>
           </div>
           <div className="right-panel" ref={contentRef}>
             <p>

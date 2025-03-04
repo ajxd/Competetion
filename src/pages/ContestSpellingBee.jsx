@@ -4,31 +4,35 @@ import './ContestSpellingBee.scss';
 import spellingImg from '../assets/images/spelling.png';
 
 const ContestSpellingBee = () => {
-  // Refs for interactive background and overlay elements
+  // Refs for interactive background, overlay, header, and content.
   const canvasContainerRef = useRef(null);
   const overlayRef = useRef(null);
   const headerRef = useRef(null);
   const contentRef = useRef(null);
+  // For interactive pointer tracking.
   const pointerPosRef = useRef({ x: window.innerWidth / 2, y: window.innerHeight / 2 });
+  // For the Easter egg feature.
   const easterEggClicksRef = useRef([]);
 
   // -------------------------------
-  // Interactive Canvas Background: Floating Letters
+  // Interactive Background: Floating Letters Effect
   // -------------------------------
   useEffect(() => {
     const container = canvasContainerRef.current;
+    if (!container) return; // Guard: proceed only if container exists
+
     let width = window.innerWidth;
     let height = window.innerHeight;
     
-    // Create a full-screen canvas
+    // Create a full-screen canvas element
     const canvas = document.createElement('canvas');
     canvas.width = width;
     canvas.height = height;
     canvas.className = 'background-canvas';
     container.appendChild(canvas);
     const ctx = canvas.getContext('2d');
-    
-    // Create an array of floating letters using the alphabet
+
+    // Create an array of floating letters from the alphabet
     const letters = [];
     const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     const letterCount = 100;
@@ -39,32 +43,31 @@ const ContestSpellingBee = () => {
         y: Math.random() * height,
         vx: (Math.random() - 0.5) * 1,
         vy: Math.random() * 1 + 0.5,
-        fontSize: Math.random() * 20 + 30
+        fontSize: Math.random() * 20 + 30,
       });
     }
-    
-    // Update positions; if a letter goes off the bottom, wrap it to the top
+
+    // Update letter positions; wrap from bottom to top and sides.
     const updateLetters = () => {
       letters.forEach(letter => {
         letter.x += letter.vx;
         letter.y += letter.vy;
-        if(letter.y - letter.fontSize > height) {
+        if (letter.y - letter.fontSize > height) {
           letter.y = -letter.fontSize;
           letter.x = Math.random() * width;
         }
-        if(letter.x < 0) letter.x = width;
-        if(letter.x > width) letter.x = 0;
+        if (letter.x < 0) letter.x = width;
+        if (letter.x > width) letter.x = 0;
       });
     };
-    
-    // Draw each letter using a gradient fill for a vibrant look
+
+    // Draw each letter with a gradient fill for a vibrant effect
     const drawLetters = () => {
       ctx.clearRect(0, 0, width, height);
       letters.forEach(letter => {
         ctx.font = `${letter.fontSize}px Arial`;
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
-        // Create a linear gradient fill that spans the letter's width
         const grad = ctx.createLinearGradient(letter.x - letter.fontSize, letter.y, letter.x + letter.fontSize, letter.y);
         grad.addColorStop(0, `hsla(${Math.random()*360}, 80%, 60%, 1)`);
         grad.addColorStop(1, `hsla(${Math.random()*360}, 80%, 80%, 1)`);
@@ -80,39 +83,24 @@ const ContestSpellingBee = () => {
       animationFrameId = requestAnimationFrame(animateCanvas);
     };
     animateCanvas();
-    
-    // Update canvas size on window resize
+
     const handleResize = () => {
       width = canvas.width = window.innerWidth;
       height = canvas.height = window.innerHeight;
     };
     window.addEventListener('resize', handleResize);
-    
-    // Update pointer position for interactive effects (if needed)
+
     const handlePointerMove = (e) => {
-      let clientX, clientY;
-      if (e.touches) {
-        clientX = e.touches[0].clientX;
-        clientY = e.touches[0].clientY;
-      } else {
-        clientX = e.clientX;
-        clientY = e.clientY;
-      }
+      const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+      const clientY = e.touches ? e.touches[0].clientY : e.clientY;
       pointerPosRef.current = { x: clientX, y: clientY };
     };
     window.addEventListener('pointermove', handlePointerMove);
     window.addEventListener('touchmove', handlePointerMove);
-    
-    // Easter Egg: Rotate overlay if user clicks in top-left corner 3 times in 5 seconds
+
     const handlePointerDown = (e) => {
-      let clientX, clientY;
-      if (e.touches) {
-        clientX = e.touches[0].clientX;
-        clientY = e.touches[0].clientY;
-      } else {
-        clientX = e.clientX;
-        clientY = e.clientY;
-      }
+      const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+      const clientY = e.touches ? e.touches[0].clientY : e.clientY;
       if (clientX < 100 && clientY < 100) {
         const now = Date.now();
         easterEggClicksRef.current = easterEggClicksRef.current.filter(t => now - t < 5000);
@@ -125,7 +113,7 @@ const ContestSpellingBee = () => {
     };
     window.addEventListener('pointerdown', handlePointerDown);
     window.addEventListener('touchstart', handlePointerDown);
-    
+
     return () => {
       window.removeEventListener('resize', handleResize);
       window.removeEventListener('pointermove', handlePointerMove);
@@ -140,7 +128,7 @@ const ContestSpellingBee = () => {
   }, []);
 
   // -------------------------------
-  // Animate Overlay Content with GSAP and Parallax
+  // Animate overlay content with GSAP and Parallax Effects
   // -------------------------------
   useEffect(() => {
     gsap.fromTo(
@@ -168,9 +156,7 @@ const ContestSpellingBee = () => {
 
   return (
     <div className="contest-spelling-page">
-      {/* Canvas container for interactive background */}
       <div ref={canvasContainerRef} className="canvas-container"></div>
-      {/* Overlay content container */}
       <div className="overlay" ref={overlayRef}>
         <div className="content-wrapper">
           <div className="left-panel">
@@ -179,6 +165,17 @@ const ContestSpellingBee = () => {
             </div>
             <h1 ref={headerRef}>Spelling Bee</h1>
             <p className="tagline">"Spell Your Success – Equal Words for Every Child!"</p>
+            {/* Coordinator Info placed immediately below the tagline */}
+            <div className="coordinator-info">
+              <div className="coordinator-photo">
+                <img src={require('../assets/images/coordinator.jpg')} alt="Contest Coordinator" />
+              </div>
+              <div className="coordinator-details">
+                <p><strong>Contest Coordinator 😊</strong></p>
+                <p>Contact Number: 9884481399</p>
+                <p>Mail Address: info@ranmars.com</p>
+              </div>
+            </div>
           </div>
           <div className="right-panel" ref={contentRef}>
             <p>

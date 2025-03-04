@@ -4,12 +4,14 @@ import './ContestStorytelling.scss';
 import singImg from '../assets/images/sing.png'; // Replace with your storytelling image if needed
 
 const ContestStorytelling = () => {
-  // Refs for the interactive background and overlay content
+  // Refs for the interactive background, overlay, header, and content.
   const canvasContainerRef = useRef(null);
   const overlayRef = useRef(null);
   const headerRef = useRef(null);
   const contentRef = useRef(null);
+  // For interactive pointer tracking.
   const pointerPosRef = useRef({ x: window.innerWidth / 2, y: window.innerHeight / 2 });
+  // For the Easter egg feature.
   const easterEggClicksRef = useRef([]);
 
   // -------------------------------
@@ -17,6 +19,8 @@ const ContestStorytelling = () => {
   // -------------------------------
   useEffect(() => {
     const container = canvasContainerRef.current;
+    if (!container) return; // Guard: proceed only if container exists
+
     let width = window.innerWidth;
     let height = window.innerHeight;
     // Create a full-screen canvas element
@@ -28,7 +32,6 @@ const ContestStorytelling = () => {
     const ctx = canvas.getContext('2d');
 
     let time = 0;
-    // Animation loop for the magical ink background
     const animateCanvas = () => {
       time += 0.01;
       ctx.clearRect(0, 0, width, height);
@@ -36,15 +39,12 @@ const ContestStorytelling = () => {
       // Create several "ink blobs" that swirl and react to the pointer.
       const blobCount = 15;
       for (let i = 0; i < blobCount; i++) {
-        // Calculate position with sine/cosine functions for a swirling effect
         const angle = time + (i * 2 * Math.PI) / blobCount;
         const radius = 80 + 30 * Math.sin(time * 2 + i);
         const x = width / 2 + (width / 3) * Math.cos(angle) + (pointerPosRef.current.x - width / 2) * 0.1;
         const y = height / 2 + (height / 3) * Math.sin(angle) + (pointerPosRef.current.y - height / 2) * 0.1;
         
-        // Create a dynamic radial gradient for a high-definition ink look
         const grad = ctx.createRadialGradient(x, y, radius * 0.2, x, y, radius);
-        // Use a mix of vibrant hues for a magical feel
         const hue = (360 * Math.abs(Math.sin(angle))) | 0;
         grad.addColorStop(0, `hsla(${hue}, 100%, 90%, 0.8)`);
         grad.addColorStop(0.5, `hsla(${(hue + 30) % 360}, 100%, 70%, 0.6)`);
@@ -60,14 +60,12 @@ const ContestStorytelling = () => {
     };
     animateCanvas();
 
-    // Resize canvas when window is resized
     const handleResize = () => {
       width = canvas.width = window.innerWidth;
       height = canvas.height = window.innerHeight;
     };
     window.addEventListener('resize', handleResize);
 
-    // Update pointer position for interactive background effects
     const handlePointerMove = (e) => {
       const clientX = e.touches ? e.touches[0].clientX : e.clientX;
       const clientY = e.touches ? e.touches[0].clientY : e.clientY;
@@ -76,7 +74,6 @@ const ContestStorytelling = () => {
     window.addEventListener('pointermove', handlePointerMove);
     window.addEventListener('touchmove', handlePointerMove);
 
-    // Easter Egg: If the user clicks the top-left corner three times in 5 seconds, rotate the overlay.
     const handlePointerDown = (e) => {
       const clientX = e.touches ? e.touches[0].clientX : e.clientX;
       const clientY = e.touches ? e.touches[0].clientY : e.clientY;
@@ -99,12 +96,14 @@ const ContestStorytelling = () => {
       window.removeEventListener('touchmove', handlePointerMove);
       window.removeEventListener('pointerdown', handlePointerDown);
       window.removeEventListener('touchstart', handlePointerDown);
-      container.removeChild(canvas);
+      if (container.contains(canvas)) {
+        container.removeChild(canvas);
+      }
     };
   }, []);
 
   // -------------------------------
-  // Animate Overlay Content with GSAP and Parallax Effects
+  // Animate overlay content with GSAP and Parallax Effects
   // -------------------------------
   useEffect(() => {
     gsap.fromTo(
@@ -143,6 +142,17 @@ const ContestStorytelling = () => {
             </div>
             <h1 ref={headerRef}>Storytelling</h1>
             <p className="tagline">"Every Tale is Magical – Let Your Story Shine!"</p>
+            {/* Coordinator Info placed immediately below the tagline */}
+            <div className="coordinator-info">
+              <div className="coordinator-photo">
+                <img src={require('../assets/images/coordinator.jpg')} alt="Contest Coordinator" />
+              </div>
+              <div className="coordinator-details">
+                <p><strong>Contest Coordinator 😊</strong></p>
+                <p>Contact Number: 9884481399</p>
+                <p>Mail Address: info@ranmars.com</p>
+              </div>
+            </div>
           </div>
           <div className="right-panel" ref={contentRef}>
             <p>

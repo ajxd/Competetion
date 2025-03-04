@@ -11,7 +11,7 @@ const ContestCostume = () => {
   const contentRef = useRef(null);
   // Pointer position for interactive effects
   const pointerPosRef = useRef({ x: window.innerWidth / 2, y: window.innerHeight / 2 });
-  // Easter egg clicks (top-left corner)
+  // Easter egg clicks (for rotation)
   const easterEggClicksRef = useRef([]);
 
   // -------------------------------
@@ -28,7 +28,7 @@ const ContestCostume = () => {
     container.appendChild(canvas);
     const ctx = canvas.getContext('2d');
 
-    // Create an array of bubbles (gradient “glass” bubbles)
+    // Create an array of bubbles ("glass" bubbles)
     const bubbleCount = 150;
     const bubbles = [];
     for (let i = 0; i < bubbleCount; i++) {
@@ -39,7 +39,6 @@ const ContestCostume = () => {
         vx: (Math.random() - 0.5) * 2,
         vy: (Math.random() - 0.5) * 2,
         radius,
-        // Each bubble uses a gradient fill with random hues
         colorStops: [
           { offset: 0, color: `hsla(${Math.random() * 360}, 100%, 80%, 1)` },
           { offset: 1, color: `hsla(${Math.random() * 360}, 100%, 50%, 0)` }
@@ -47,22 +46,18 @@ const ContestCostume = () => {
       });
     }
 
-    // Update bubble positions and apply simple physics
     const updateBubbles = () => {
       bubbles.forEach(bubble => {
         bubble.x += bubble.vx;
         bubble.y += bubble.vy;
-        // Bounce off left/right
         if (bubble.x - bubble.radius < 0 || bubble.x + bubble.radius > width) {
           bubble.vx = -bubble.vx;
           bubble.x = Math.max(bubble.radius, Math.min(bubble.x, width - bubble.radius));
         }
-        // Bounce off top/bottom
         if (bubble.y - bubble.radius < 0 || bubble.y + bubble.radius > height) {
           bubble.vy = -bubble.vy;
           bubble.y = Math.max(bubble.radius, Math.min(bubble.y, height - bubble.radius));
         }
-        // If pointer is nearby, push bubble away
         const dx = bubble.x - pointerPosRef.current.x;
         const dy = bubble.y - pointerPosRef.current.y;
         const dist = Math.sqrt(dx * dx + dy * dy);
@@ -74,7 +69,6 @@ const ContestCostume = () => {
       });
     };
 
-    // Draw bubbles with their gradient fills
     const drawBubbles = () => {
       ctx.clearRect(0, 0, width, height);
       bubbles.forEach(bubble => {
@@ -100,14 +94,12 @@ const ContestCostume = () => {
     };
     animate();
 
-    // Handle resize events
     const handleResize = () => {
       width = canvas.width = window.innerWidth;
       height = canvas.height = window.innerHeight;
     };
     window.addEventListener('resize', handleResize);
 
-    // Update pointer position for interactive effects
     const handlePointerMove = (e) => {
       const clientX = e.touches ? e.touches[0].clientX : e.clientX;
       const clientY = e.touches ? e.touches[0].clientY : e.clientY;
@@ -116,7 +108,6 @@ const ContestCostume = () => {
     window.addEventListener('pointermove', handlePointerMove);
     window.addEventListener('touchmove', handlePointerMove);
 
-    // Easter egg: if clicked in the top-left corner three times in 5 seconds, rotate overlay
     const handlePointerDown = (e) => {
       const clientX = e.touches ? e.touches[0].clientX : e.clientX;
       const clientY = e.touches ? e.touches[0].clientY : e.clientY;
@@ -147,7 +138,7 @@ const ContestCostume = () => {
   }, []);
 
   // -------------------------------
-  // Animate Overlay Content with GSAP and Parallax
+  // Animate overlay content with GSAP and interactive parallax
   // -------------------------------
   useEffect(() => {
     gsap.fromTo(
@@ -161,8 +152,8 @@ const ContestCostume = () => {
       { opacity: 1, y: 0, letterSpacing: '3px', duration: 1.2, ease: 'power3.out', delay: 0.3 }
     );
     const handleOverlayParallax = (e) => {
-      const offsetX = ((e.clientX - window.innerWidth/2) / window.innerWidth) * 20;
-      const offsetY = ((e.clientY - window.innerHeight/2) / window.innerHeight) * 20;
+      const offsetX = ((e.clientX - window.innerWidth / 2) / window.innerWidth) * 20;
+      const offsetY = ((e.clientY - window.innerHeight / 2) / window.innerHeight) * 20;
       gsap.to(overlayRef.current, { x: offsetX, y: offsetY, duration: 0.5, ease: 'power2.out' });
     };
     window.addEventListener('pointermove', handleOverlayParallax);
@@ -175,17 +166,28 @@ const ContestCostume = () => {
 
   return (
     <div className="contest-costume-page">
-      {/* Canvas container for interactive background */}
+      {/* Container for the interactive background */}
       <div ref={canvasContainerRef} className="canvas-container"></div>
-      {/* Overlay container with gradient content box */}
+      {/* Overlay container with content box */}
       <div className="overlay" ref={overlayRef}>
         <div className="content-wrapper">
           <div className="left-panel">
-            <div className="sing-img-wrapper">
-              <img src={costumeImg} alt="Costume Parade" className="sing-img" />
+            <div className="costume-img-wrapper">
+              <img src={costumeImg} alt="Costume Parade" className="costume-img" />
             </div>
             <h1 ref={headerRef}>Costume Parade</h1>
             <p className="tagline">"Dress to Impress, Show Your Best – Equal for All!"</p>
+            {/* Coordinator Info placed immediately below the tagline */}
+            <div className="coordinator-info">
+              <div className="coordinator-photo">
+                <img src={require('../assets/images/coordinator.jpg')} alt="Contest Coordinator" />
+              </div>
+              <div className="coordinator-details">
+                <p><strong>Contest Coordinator 😊</strong></p>
+                <p>Contact Number: 9884481399</p>
+                <p>Mail Address: info@ranmars.com</p>
+              </div>
+            </div>
           </div>
           <div className="right-panel" ref={contentRef}>
             <p>
