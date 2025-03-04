@@ -1,81 +1,19 @@
-/* Home.scss */
+/* Global Container Styling */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
 
-.home-page {
+/* Base styles for each section */
+section {
+  padding: 60px 0;
   position: relative;
-  min-height: 100vh;
-  overflow-x: hidden;
-  
-  /* 3D Canvas behind the content */
-  .three-canvas {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -1;
-    pointer-events: none;
-  }
+  overflow: hidden;
+  background: transparent;
 }
 
-/* main content overlay style */
-.content {
-  position: relative;
-  z-index: 1;
-}
-
-/* Glassy effect for sections */
-.glassy {
-  background: rgba(255,255,255,0.2);
-  border: 1px solid rgba(255,255,255,0.3);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-}
-
-/* Hero Section */
-.hero-section {
-  width: 100%;
-  height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  .hero-content {
-    text-align: center;
-    padding: 2rem;
-    border-radius: 1rem;
-    max-width: 600px;
-
-    h1 {
-      font-size: 3rem;
-      margin-bottom: 1rem;
-      color: #fff;
-      text-shadow: 0 3px 5px rgba(0,0,0,0.4);
-    }
-    p {
-      font-size: 1.2rem;
-      color: #fff;
-      margin-bottom: 2rem;
-      text-shadow: 0 2px 4px rgba(0,0,0,0.3);
-    }
-    .cta-btn {
-      background: linear-gradient(45deg, #ff00cc, #3333ff);
-      color: #fff;
-      padding: 0.8rem 1.5rem;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      font-size: 1rem;
-      box-shadow: 0 0 8px #ff00cc, 0 0 16px #3333ff;
-      transition: box-shadow 0.3s, transform 0.3s;
-      &:hover {
-        transform: scale(1.05);
-        box-shadow: 0 0 15px #ff00cc, 0 0 30px #3333ff;
-      }
-    }
-  }
-}
-
-/* General .section-content styling is from user's existing CSS:
- *   when an element is visible, it animates from the .visible class. */
+/* Initial state for sections (hidden & transformed) */
 .section-content {
   opacity: 0;
   transform: translateY(50px) scale(0.95) rotate(3deg);
@@ -86,14 +24,7 @@
   }
 }
 
-/* Container styling from existing code */
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 40px 20px;
-}
-
-/* Contest Categories */
+/* Contest Categories Section */
 .contest-categories {
   background: linear-gradient(135deg, #ffffff, #f7f7f700);
   h2 {
@@ -243,6 +174,7 @@
     }
   }
 }
+
 @keyframes slideIn {
   to {
     opacity: 1;
@@ -347,26 +279,133 @@
   }
 }
 
-/* Glow shift animation for the contact card border */
-@keyframes gradientShift {
+/* Registration Navigation Section */
+.registration-nav-section {
+  text-align: center;
+  padding: 80px 20px;
+  background: linear-gradient(45deg, #ff00cc, #3333ff);
+  color: #fff;
+  .container {
+    max-width: 800px;
+    margin: auto;
+  }
+  h2 {
+    font-size: 2.5rem;
+    margin-bottom: 15px;
+    text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
+  }
+  p {
+    font-size: 1.2rem;
+    margin-bottom: 30px;
+  }
+  .register-btn {
+    padding: 15px 30px;
+    font-size: 1.5rem;
+    background: linear-gradient(45deg, #f0a500, #f08d00);
+    border: none;
+    border-radius: 5px;
+    color: #fff;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    &:hover {
+      transform: scale(1.1);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+    }
+  }
+}
+
+/* Registration Section (Embedded Registration Form) */
+.registration-page {
+  position: relative;
+  min-height: 100vh;
+  background: transparent; /* Background from RainbowBalls */
+  z-index: 1;
+}
+.registration-container {
+  position: relative;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(8px);
+  border-radius: 15px;
+  padding: 40px;
+  max-width: 600px;
+  margin: 80px auto;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  h2 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    background: linear-gradient(45deg, #f0a500, #f08d00);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  p {
+    font-size: 1.2rem;
+    margin-bottom: 30px;
+    color: #666;
+  }
+}
+.registration-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    label {
+      font-size: 1.1rem;
+      margin-bottom: 8px;
+      color: #333;
+      transition: color 0.3s;
+    }
+    input,
+    select {
+      width: 100%;
+      padding: 12px;
+      font-size: 1rem;
+      border: 2px solid #e0e0e0;
+      border-radius: 5px;
+      background: rgba(255, 255, 255, 0.9);
+      transition: border-color 0.3s, box-shadow 0.3s;
+      &:focus {
+        border-color: #f0a500;
+        box-shadow: 0 0 8px rgba(240, 165, 0, 0.5);
+        outline: none;
+      }
+    }
+  }
+}
+.submit-btn {
+  padding: 15px;
+  font-size: 1.2rem;
+  background: linear-gradient(45deg, #f0a500, #f08d00);
+  border: none;
+  border-radius: 5px;
+  color: #fff;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: background 0.3s, transform 0.3s, box-shadow 0.3s;
+  &:hover {
+    background: linear-gradient(45deg, #cf8500, #cf6e00);
+    transform: scale(1.03);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+  }
+}
+
+/* Global keyframes */
+@keyframes gradientBG {
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
   100% { background-position: 0% 50%; }
 }
-
-/* Glassy helper class for hero content, for instance */
-.glassy {
-  background: rgba(255,255,255,0.2);
-  backdrop-filter: blur(8px);
-  border: 1px solid rgba(255,255,255,0.4);
-} 
 
 /* Neon style for CTA button if desired */
 .neon {
   box-shadow: 0 0 10px #ff00cc, 0 0 30px #ff00cc;
 }
 
-/* Media query for small screens */
+/* Responsive Styles */
 @media (max-width: 768px) {
   .hero-section {
     .hero-content {
@@ -379,5 +418,11 @@
   }
   .venue-wrapper {
     flex-direction: column;
+  }
+  .registration-nav-section {
+    padding: 60px 15px;
+    h2 { font-size: 2rem; }
+    p { font-size: 1rem; }
+    .register-btn { font-size: 1.2rem; padding: 12px 25px; }
   }
 }

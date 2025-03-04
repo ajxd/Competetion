@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react'; 
 import { useNavigate } from 'react-router-dom';
 import gsap from 'gsap';
 import { Elements } from '@stripe/react-stripe-js';
@@ -7,7 +7,7 @@ import './RegistrationForm.scss';
 import RainbowBalls from '../components/RainbowBalls';
 import PaymentForm from './PaymentForm';
 
-// Initialize Stripe
+// Initialize Stripe with your test publishable key
 const stripePromise = loadStripe(
   'pk_test_51Nb96uINWXfLdDEdEiIrOoN0awlgKICINAFJiczSdoWBst3gqpZP06kpKmccg69WgDZoTZLhvMwyAaUHvl1QSjcA00kM0GhHF8'
 );
@@ -41,18 +41,18 @@ const RegistrationForm = () => {
   ];
 
   useEffect(() => {
-    gsap.fromTo(
-      formRef.current,
-      { opacity: 0, y: 50 },
-      { opacity: 1, y: 0, duration: 1, ease: 'power3.out' }
-    );
-
+    if (formRef.current) {
+      gsap.fromTo(
+        formRef.current,
+        { opacity: 0, y: 50 },
+        { opacity: 1, y: 0, duration: 1, ease: 'power3.out' }
+      );
+    }
+    // Fetch PaymentIntent client secret from your backend
     fetch('http://localhost:3001/create-payment-intent', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ amount: 5000 }) // Adjust amount as needed
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ amount: 5000 }) // Adjust the amount as needed
     })
       .then((res) => res.json())
       .then((data) => setClientSecret(data.clientSecret))
@@ -83,28 +83,23 @@ const RegistrationForm = () => {
       <div className="registration-container" ref={formRef}>
         <h2>Register Now</h2>
         <p>Join the competition and showcase your talent!</p>
-
         <form onSubmit={handleSubmit} className="registration-form">
           <div className="form-group">
             <label>Name:</label>
             <input type="text" name="name" required value={formData.name} onChange={handleChange} />
           </div>
-
           <div className="form-group">
             <label>Age:</label>
             <input type="number" name="age" required value={formData.age} onChange={handleChange} />
           </div>
-
           <div className="form-group">
             <label>Email:</label>
             <input type="email" name="email" required value={formData.email} onChange={handleChange} />
           </div>
-
           <div className="form-group">
             <label>Phone:</label>
             <input type="tel" name="phone" required value={formData.phone} onChange={handleChange} />
           </div>
-
           <div className="form-group">
             <label>Competition Category:</label>
             <select name="category" required value={formData.category} onChange={handleChange}>
@@ -114,17 +109,14 @@ const RegistrationForm = () => {
               ))}
             </select>
           </div>
-
           <div className="form-group terms">
             <label>
               <input type="checkbox" name="agreeTerms" checked={formData.agreeTerms} onChange={handleChange} />
               I agree to the <a href="/terms">Terms & Conditions</a>
             </label>
           </div>
-
           <button type="submit" className="submit-btn">Proceed to Payment</button>
         </form>
-
         {clientSecret ? (
           <Elements stripe={stripePromise} options={{ clientSecret }}>
             <PaymentForm />

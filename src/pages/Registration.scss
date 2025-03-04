@@ -1,87 +1,118 @@
-/* src/pages/Registration.scss */
-
+/* Global Container Styling for Registration Page */
 .registration-page {
-    position: relative;
-    min-height: 100vh;
-    background: transparent; /* Background comes from RainbowBalls */
-    z-index: 1;
+  position: relative;
+  min-height: 100vh;
+  background: transparent; /* Background provided by RainbowBalls component */
+  z-index: 1;
+}
+
+/* Registration Container with Glassmorphic Effect */
+.registration-container {
+  position: relative;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(8px);
+  border-radius: 15px;
+  padding: 40px;
+  max-width: 600px;
+  margin: 80px auto;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  text-align: center;
+
+  h2 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    background: linear-gradient(45deg, #f0a500, #f08d00);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
   }
   
-  .registration-container {
-    position: relative;
-    background: rgba(255, 255, 255, 0.85);
-    backdrop-filter: blur(8px);
-    border-radius: 15px;
-    padding: 40px;
-    max-width: 600px;
-    margin: 80px auto;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-    text-align: center;
-  
-    h2 {
-      font-size: 2.5rem;
-      margin-bottom: 20px;
-      background: linear-gradient(45deg, #f0a500, #f08d00);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-    
-    p {
-      font-size: 1.2rem;
-      margin-bottom: 30px;
-      color: #666;
-    }
+  p {
+    font-size: 1.2rem;
+    margin-bottom: 30px;
+    color: #666;
   }
-  
-  .registration-form {
+}
+
+/* Registration Form Styles */
+.registration-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  .form-group {
     display: flex;
     flex-direction: column;
-    gap: 20px;
-    
-    .form-group {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-  
-      label {
-        font-size: 1.1rem;
-        margin-bottom: 8px;
-        color: #333;
-        transition: color 0.3s;
-      }
-      
-      input,
-      select {
-        width: 100%;
-        padding: 12px;
-        font-size: 1rem;
-        border: 2px solid #e0e0e0;
-        border-radius: 5px;
-        background: rgba(255, 255, 255, 0.9);
-        transition: border-color 0.3s, box-shadow 0.3s;
-        &:focus {
-          border-color: #f0a500;
-          box-shadow: 0 0 8px rgba(240, 165, 0, 0.5);
-          outline: none;
-        }
-      }
+    align-items: flex-start;
+
+    label {
+      font-size: 1.1rem;
+      margin-bottom: 8px;
+      color: #333;
+      transition: color 0.3s;
     }
     
-    .submit-btn {
-      padding: 15px;
-      font-size: 1.2rem;
-      background: linear-gradient(45deg, #f0a500, #f08d00);
-      border: none;
+    input,
+    select,
+    textarea {
+      width: 100%;
+      padding: 12px;
+      font-size: 1rem;
+      border: 2px solid #e0e0e0;
       border-radius: 5px;
-      color: #fff;
-      cursor: pointer;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-      transition: background 0.3s, transform 0.3s, box-shadow 0.3s;
-      &:hover {
-        background: linear-gradient(45deg, #cf8500, #cf6e00);
-        transform: scale(1.03);
-        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+      background: rgba(255, 255, 255, 0.9);
+      transition: border-color 0.3s, box-shadow 0.3s;
+      &:focus {
+        border-color: #f0a500;
+        box-shadow: 0 0 8px rgba(240, 165, 0, 0.5);
+        outline: none;
       }
     }
   }
-  
+
+  .terms {
+    flex-direction: row;
+    align-items: center;
+    label {
+      font-size: 1rem;
+      input {
+        margin-right: 8px;
+      }
+    }
+  }
+}
+
+/* Submit Button */
+.submit-btn {
+  padding: 15px;
+  font-size: 1.2rem;
+  background: linear-gradient(45deg, #f0a500, #f08d00);
+  border: none;
+  border-radius: 5px;
+  color: #fff;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: background 0.3s, transform 0.3s, box-shadow 0.3s;
+  &:hover {
+    background: linear-gradient(45deg, #cf8500, #cf6e00);
+    transform: scale(1.03);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+  }
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .registration-container {
+    padding: 30px;
+    margin: 40px auto;
+    h2 {
+      font-size: 2rem;
+    }
+    p {
+      font-size: 1rem;
+    }
+  }
+  .submit-btn {
+    font-size: 1rem;
+    padding: 12px 20px;
+  }
+}

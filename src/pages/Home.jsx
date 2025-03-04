@@ -1,18 +1,19 @@
 import React, { useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Hero from '../components/Hero';
 import BackgroundVideo from '../components/BackgroundVideo';
 import InteractivePebbles from '../components/InteractivePebbles';
 
-// Import venue images (update paths/extensions if needed)
+// Import venue images
 import v1 from '../assets/images/v1.jpg';
 import v2 from '../assets/images/v2.jpg';
 
 import './Home.scss';
 
 const Home = () => {
-  // Create an array of section refs for IntersectionObserver animations.
+  const navigate = useNavigate();
   const sectionRefs = useRef([]);
-  sectionRefs.current = []; // Reset on each render
+  sectionRefs.current = [];
 
   const addToRefs = (el) => {
     if (el && !sectionRefs.current.includes(el)) {
@@ -21,7 +22,7 @@ const Home = () => {
   };
 
   useEffect(() => {
-    // Using IntersectionObserver to add/remove the 'visible' class as sections enter/leave the viewport
+    // Animate sections into view as they scroll into viewport
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -34,12 +35,9 @@ const Home = () => {
       },
       { threshold: 0.5 }
     );
-
     sectionRefs.current.forEach((section) => {
       observer.observe(section);
     });
-
-    // Cleanup on unmount
     return () => {
       sectionRefs.current.forEach((section) => {
         observer.unobserve(section);
@@ -148,11 +146,7 @@ const Home = () => {
                 Chennai-600089
               </p>
               <p>
-                <a
-                  href="http://www.chennaitradecentre.org"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
+                <a href="http://www.chennaitradecentre.org" target="_blank" rel="noopener noreferrer">
                   www.chennaitradecentre.org
                 </a>
               </p>
@@ -178,7 +172,7 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Contact Us Section (replaces the previous Highlights section) */}
+      {/* Contact Us Section */}
       <section className="contact-us-section section-content" ref={addToRefs}>
         <div className="container">
           <a href="/contact" className="contact-card">
@@ -200,6 +194,17 @@ const Home = () => {
               </div>
             </div>
           </a>
+        </div>
+      </section>
+
+      {/* Registration Navigation Section */}
+      <section className="registration-nav-section section-content" ref={addToRefs}>
+        <div className="container">
+          <h2>Are You Ready to Compete?</h2>
+          <p>Sign up now and showcase your amazing talent!</p>
+          <button className="register-btn" onClick={() => navigate('/registration')}>
+            Register Now
+          </button>
         </div>
       </section>
     </>

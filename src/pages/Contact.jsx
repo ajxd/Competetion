@@ -68,12 +68,12 @@ function ContactUs() {
           {/* Contact Information Card */}
           <div className="card contact-info-card">
             <h2>Contact Information</h2>
-            <p>
-              <FaMapMarkerAlt className="icon" /> <strong>Address:</strong><br />
-              New Convention Centre,<br />
-              CTC Complex, Nandambakkam,<br />
-              Chennai-600089
-            </p>
+            <p>Ranmars Corp</p>
+                <p>Suite 402, 4th Floor</p>
+                <p>Workafella, Highstreet</p>
+                <p>No. 431, Anna Salai</p>
+                <p>Teynampet</p>
+                <p>Chennai – 600018</p>
             <p><FaPhone className="icon" /> <strong>Phone:</strong> +91-XXXXXXXXXX</p>
             <p><FaEnvelope className="icon" /> <strong>Email:</strong> contact@example.com</p>
             <h3>Business Hours <FaClock className="icon" /></h3>
