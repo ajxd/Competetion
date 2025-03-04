@@ -1,7 +1,7 @@
-// src/components/Header.jsx
 import React, { useState, useRef, useEffect } from "react";
 import { gsap } from "gsap";
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
+import ranmarsLogo from "../assets/images/ranmars.png";
 import "./Header.scss";
 
 const Header = () => {
@@ -32,7 +32,9 @@ const Header = () => {
   return (
     <header className="header">
       <div className="logo">
-        <Link to="/">Young Talents</Link>
+        <Link to="/">
+          <img src={ranmarsLogo} alt="Ranmars Logo" className="logo-img" />
+        </Link>
       </div>
       <div className="hamburger" onClick={() => setMenuOpen(!menuOpen)}>
         <div ref={line1} className="line"></div>

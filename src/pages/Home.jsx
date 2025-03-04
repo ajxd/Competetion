@@ -1,15 +1,16 @@
 import React, { useEffect, useRef } from 'react';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Hero from '../components/Hero';
 import BackgroundVideo from '../components/BackgroundVideo';
 import InteractivePebbles from '../components/InteractivePebbles';
+
+// Import venue images (update paths/extensions if needed)
+import v1 from '../assets/images/v1.jpg';
+import v2 from '../assets/images/v2.jpg';
+
 import './Home.scss';
 
-gsap.registerPlugin(ScrollTrigger);
-
 const Home = () => {
-  // Create an array of section refs for CSS-triggered animations.
+  // Create an array of section refs for IntersectionObserver animations.
   const sectionRefs = useRef([]);
   sectionRefs.current = []; // Reset the array on each render
 
@@ -48,25 +49,12 @@ const Home = () => {
 
   return (
     <>
-      {/* Only on the homepage: render the background video and pebbles */}
+      {/* Background elements and hero remain unchanged */}
       <BackgroundVideo />
       <InteractivePebbles />
       <Hero />
 
-      <section className="why-contest section-content" ref={addToRefs}>
-        <div className="container">
-          <h2>Why This Contest?</h2>
-          <p>
-            Contest is an excellent opportunity to showcase the talents, aiming to
-            recognize, nurture, and celebrate the creativity and skills of our kids.
-            Through various categories and fun challenges, participants are inspired
-            to reach new heights.
-          </p>
-          <a href="/about" className="btn">Learn More</a>
-        </div>
-      </section>
-
-      {/* Contest Categories Section with Star-Shaped Cards */}
+      {/* Contest Categories Section as the first section */}
       <section className="contest-categories section-content" ref={addToRefs}>
         <div className="container">
           <h2>Contest Categories</h2>
@@ -122,6 +110,11 @@ const Home = () => {
               <a href="/contest/crawling">View Details</a>
             </div>
             <div className="category-card">
+              <h3>Art & Craft </h3>
+              <p>"Crawl, Explore, and Grow – Equal for Every Little One!"</p>
+              <a href="/contest/Art">View Details</a>
+            </div>
+            <div className="category-card">
               <h3>Yoga Competition</h3>
               <p>"Stretch, Breathe, Achieve – Equal Flexibility for All!"</p>
               <a href="/contest/yoga">View Details</a>
@@ -130,6 +123,38 @@ const Home = () => {
         </div>
       </section>
 
+      {/* Venue Information Section (reduced size with advanced features) */}
+      <section className="venue-info section-content" ref={addToRefs}>
+        <div className="container">
+          <div className="venue-wrapper">
+            <div className="venue-text">
+              <h2>Where it is happening?</h2>
+              <p><strong>Venue:</strong></p>
+              <p>
+                New Convention Centre,<br />
+                CTC Complex,<br />
+                Nandambakkam,<br />
+                Chennai-600089
+              </p>
+              <p>
+                <a
+                  href="http://www.chennaitradecentre.org"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  www.chennaitradecentre.org
+                </a>
+              </p>
+            </div>
+            <div className="venue-images">
+              <img src={v1} alt="Venue Image 1" className="venue-image" />
+              <img src={v2} alt="Venue Image 2" className="venue-image" />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Upcoming Info Section */}
       <section className="upcoming-info section-content" ref={addToRefs}>
         <div className="container">
           <h2>Upcoming Dates & Important Info</h2>
@@ -142,6 +167,7 @@ const Home = () => {
         </div>
       </section>
 
+      {/* Highlights Section */}
       <section className="highlights section-content" ref={addToRefs}>
         <div className="container">
           <h2>Highlights</h2>

@@ -1,62 +1,73 @@
-// src/components/Header.scss
 .header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px 40px;
-    background: #fff;
-    position: relative;
-    z-index: 1000;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-  
-    .logo a {
-      font-size: 24px;
-      font-weight: bold;
-      color: #333;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 40px;
+  background: linear-gradient(110deg, rgb(255 255 255) 0%, rgb(255 255 255 / 85%) 100%);
+  position: relative;
+  z-index: 1000;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transition: background 0.5s ease;
+
+  .logo {
+    a {
       text-decoration: none;
-    }
-  
-    .hamburger {
-      cursor: pointer;
       display: flex;
-      flex-direction: column;
-      gap: 5px;
-      z-index: 1100;
-      .line {
-        width: 30px;
-        height: 3px;
-        background-color: #000000bf;
-        border-radius: 2px;
-      }
+      align-items: center;
     }
-  
-    .nav-menu {
-      position: fixed;
-      top: 0;
-      right: -100%;
-      width: 300px;
-      height: 100%;
-      background: #333;
-      color: #fff;
-      opacity: 0;
-      transition: opacity 0.5s;
-      z-index: 1050;
-      ul {
-        list-style: none;
-        padding: 60px 30px;
-        li {
-          margin: 20px 0;
-          a {
-            color: #fff;
-            text-decoration: none;
-            font-size: 20px;
-            transition: color 0.3s;
-            &:hover {
-              color: #f0a500;
-            }
+    .logo-img {
+      max-height: 60px;
+      transition: transform 0.3s ease;
+    }
+    .logo-img:hover {
+      transform: scale(1.1);
+    }
+  }
+
+  .hamburger {
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    z-index: 1100;
+    .line {
+      width: 35px;
+      height: 4px;
+      background-color: #685c5c;
+      border-radius: 2px;
+      transition: background-color 0.3s ease;
+    }
+    &:hover .line {
+      background-color: #f0a500;
+    }
+  }
+
+  .nav-menu {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 300px;
+    height: 100%;
+    background: #222;
+    color: #fff;
+    opacity: 0;
+    transition: opacity 0.5s;
+    z-index: 1050;
+    ul {
+      list-style: none;
+      padding: 60px 30px;
+      li {
+        margin: 20px 0;
+        a {
+          color: #fff;
+          text-decoration: none;
+          font-size: 20px;
+          transition: color 0.3s;
+          &:hover {
+            color: #ffffff;
           }
         }
       }
     }
   }
-  
+}

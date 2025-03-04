@@ -20,7 +20,7 @@ import ContestHandwriting from './pages/ContestHandwriting';
 import ContestFastestWalking from './pages/ContestFastestWalking';
 import ContestCrawling from './pages/ContestCrawling';
 import ContestYoga from './pages/ContestYoga';
-
+import ContestArt from './pages/ContestArt';
 import './styles/main.scss';
 
 function App() {
@@ -46,6 +46,7 @@ function App() {
           <Route path="/contest/fastest-walking" element={<ContestFastestWalking />} />
           <Route path="/contest/crawling" element={<ContestCrawling />} />
           <Route path="/contest/yoga" element={<ContestYoga />} />
+          <Route path="/contest/Art" element={<ContestArt />} />
         </Routes>
       </div>
       <Footer />

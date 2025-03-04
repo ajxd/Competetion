@@ -1,12 +1,9 @@
 import React, { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import './ContestSinging.scss';
-// We import the image only if you plan to use it via an import.
-// Otherwise, since we are using require in the JSX, you can remove this import.
-// import singImg from '../assets/images/sing.png';
 
 const ContestSinging = () => {
-  // Define refs for the shader and notes container, overlay, header, and content.
+  // Define refs for shader, notes, overlay, header, and content.
   const shaderContainerRef = useRef(null);
   const notesContainerRef = useRef(null);
   const overlayRef = useRef(null);
@@ -14,7 +11,7 @@ const ContestSinging = () => {
   const contentRef = useRef(null);
   // For tracking pointer position for interactive effects.
   const pointerPosRef = useRef({ x: window.innerWidth / 2, y: window.innerHeight / 2 });
-  // For the Easter egg feature (clicks in the top-left corner).
+  // For the Easter egg feature.
   const easterEggClicksRef = useRef([]);
 
   // -------------------------------
@@ -64,7 +61,6 @@ const ContestSinging = () => {
       }
     `;
     
-    // Shader compilation helper
     const compileShader = (gl, source, type) => {
       const shader = gl.createShader(type);
       gl.shaderSource(shader, source);
@@ -152,7 +148,6 @@ const ContestSinging = () => {
     container.appendChild(canvas);
     const ctx = canvas.getContext('2d');
     
-    // Create musical note objects with physics properties
     const noteChars = ['♪', '♫', '♩', '♬'];
     const notes = [];
     const noteCount = 100;
@@ -172,7 +167,6 @@ const ContestSinging = () => {
     const sparkles = [];
     const ripples = [];
     
-    // Helper: Generate radial gradient for each note
     const getGradientForNote = (note, fontSize, time) => {
       const gradient = ctx.createRadialGradient(
         note.x, note.y, fontSize / 4,
@@ -208,7 +202,6 @@ const ContestSinging = () => {
       return gradient;
     };
     
-    // Helper: Gradient for sparkles
     const getGradientForSparkle = (sparkle) => {
       const gradient = ctx.createRadialGradient(
         sparkle.x, sparkle.y, sparkle.fontSize / 4,
@@ -219,7 +212,6 @@ const ContestSinging = () => {
       return gradient;
     };
     
-    // Helper: Draw ripple effect
     const drawRipple = (ripple) => {
       ctx.beginPath();
       ctx.arc(ripple.x, ripple.y, ripple.radius, 0, Math.PI * 2);
@@ -228,7 +220,6 @@ const ContestSinging = () => {
       ctx.stroke();
     };
     
-    // Physics update: update positions, bounce off edges and each other
     const updatePhysics = () => {
       notes.forEach(note => {
         note.x += note.vx;
@@ -267,7 +258,6 @@ const ContestSinging = () => {
       ctx.clearRect(0, 0, width, height);
       updatePhysics();
       
-      // Draw persistent musical notes with interactive scaling
       const pointerX = pointerPosRef.current.x;
       const pointerY = pointerPosRef.current.y;
       const threshold = 100;
@@ -285,7 +275,6 @@ const ContestSinging = () => {
         ctx.fillText(note.char, note.x, note.y);
       });
       
-      // Update and draw sparkles
       for (let i = sparkles.length - 1; i >= 0; i--) {
         const sparkle = sparkles[i];
         sparkle.x += sparkle.vx;
@@ -304,7 +293,6 @@ const ContestSinging = () => {
         }
       }
       
-      // Update and draw ripples
       for (let i = ripples.length - 1; i >= 0; i--) {
         const ripple = ripples[i];
         ripple.radius += ripple.growth;
@@ -349,7 +337,6 @@ const ContestSinging = () => {
         clientX = e.clientX;
         clientY = e.clientY;
       }
-      // Easter Egg: if clicked in the top-left corner three times in 5 seconds, trigger a 360° overlay rotation.
       if (clientX < 100 && clientY < 100) {
         const now = Date.now();
         easterEggClicksRef.current = easterEggClicksRef.current.filter(t => now - t < 5000);
@@ -390,7 +377,7 @@ const ContestSinging = () => {
       container.removeChild(canvas);
     };
   }, []);
-
+  
   // -------------------------------
   // Animate overlay content with GSAP
   // -------------------------------
@@ -417,35 +404,46 @@ const ContestSinging = () => {
       window.removeEventListener('touchmove', handleOverlayParallax);
     };
   }, []);
-
+  
   return (
     <div className="contest-singing-page">
-      {/* WebGL shader background container */}
       <div ref={shaderContainerRef} className="shader-container"></div>
-      {/* 2D interactive notes canvas container */}
       <div ref={notesContainerRef} className="notes-container"></div>
-      {/* Overlay content */}
       <div className="overlay" ref={overlayRef}>
         <div className="content-wrapper">
-          <div className="left-panel">
-            {/* Image of the Indian girl singing inside the overlay */}
-            <div className="sing-img-wrapper">
-              <img src={require('../assets/images/sing.png')} alt="Indian Girl Singing" className="sing-img" />
+          <div className="box main-box">
+            <div className="left-panel">
+              <div className="sing-img-wrapper">
+                <img src={require('../assets/images/sing.png')} alt="Indian Girl Singing" className="sing-img" />
+              </div>
+              <h1 ref={headerRef}>Singing Contest</h1>
+              <p className="tagline">"Sing Your Heart Out – A Voice for Every Dream!"</p>
             </div>
-            <h1 ref={headerRef}>Singing Contest</h1>
-            <p className="tagline">"Sing Your Heart Out – A Voice for Every Dream!"</p>
+            <div className="right-panel" ref={contentRef}>
+              <p>
+                Welcome to the Singing Contest! This competition celebrates every voice,
+                encouraging young talents to sing with passion and confidence. Whether it’s
+                lullabies, pop, or classical tunes, your voice has the power to inspire.
+              </p>
+              <p>
+                Step into the spotlight, hit every note, and let your musical journey begin!
+              </p>
+              <div className="cta">
+                <a href="/registration" className="btn">Register Now</a>
+              </div>
+            </div>
           </div>
-          <div className="right-panel" ref={contentRef}>
-            <p>
-              Welcome to the Singing Contest! This competition celebrates every voice,
-              encouraging young talents to sing with passion and confidence. Whether it’s
-              lullabies, pop, or classical tunes, your voice has the power to inspire.
-            </p>
-            <p>
-              Step into the spotlight, hit every note, and let your musical journey begin!
-            </p>
-            <div className="cta">
-              <a href="/registration" className="btn">Register Now</a>
+          {/* Coordinator Info Box placed below the main box */}
+          <div className="box coordinator-box">
+            <div className="coordinator-info">
+              <div className="coordinator-photo">
+                <img src={require('../assets/images/coordinator.jpg')} alt="Contest Coordinator" />
+              </div>
+              <div className="coordinator-details">
+                <p><strong>Contest Coordinator 😊</strong></p>
+                <p>Contact Number: 9884481399</p>
+                <p>Mail Address: info@ranmars.com</p>
+              </div>
             </div>
           </div>
         </div>

@@ -15,10 +15,11 @@ import video8 from '../assets/images/8.mp4';
 import video9 from '../assets/images/9.mp4';
 import video10 from '../assets/images/10.mp4';
 import video11 from '../assets/images/11.mp4';
+import video12 from '../assets/images/12.mp4';
 
 const videos = [
   video0, video1, video2, video3, video4, video5,
-  video6, video7, video8, video9, video10, video11
+  video6, video7, video8, video9, video10, video11,video12
 ];
 
 const Hero = () => {
